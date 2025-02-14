@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service   # Use load balancer instead of directly calling container
+          predicates:
+            - Path=/users/**
+
+        - id: exercise-service
+          uri: lb://exercise-service   # Use load balancer instead of directly calling container
+          predicates:
+            - Path=/exercises/**
+
+        - id: workout-service
+          uri: lb://workout-service   # Use load balancer instead of directly calling container
+          predicates:
+            - Path=/workouts/**
+
+        - id: social-service
+          uri: lb://social-service   # Use load balancer instead of directly calling container
+          predicates:
+            - Path=/social/**
+

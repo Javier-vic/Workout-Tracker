@@ -1,4 +1,19 @@
 services:
+  api_gateway:
+    build:
+      context: ../services/api_gateway
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user_service
+      - exercise_service
+      - workout_service
+      - social_service
+    networks:
+      - app_network
+
   user_service:
     build: 
       context: ../services/user_service
