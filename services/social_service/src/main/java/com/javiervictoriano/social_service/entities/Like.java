@@ -2,7 +2,6 @@ package com.javiervictoriano.social_service.entities;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -27,9 +26,6 @@ public class Like {
 
     @EmbeddedId
     private LikeId id;
-
-    @Column(name = "user_id", nullable = false)
-    private UUID user;
 
     @ManyToOne()
     @MapsId("postId")
