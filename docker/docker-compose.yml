@@ -1,0 +1,134 @@
+services:
+  user_service:
+    build: 
+      context: ../services/user_service
+      dockerfile: Dockerfile
+    container_name: user_service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - user_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user_db:5432/${USER_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${USER_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${USER_DB_PASSWORD}
+    networks:
+      - app_network
+
+  user_db:
+    image: postgres:16
+    container_name: user_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${USER_DB_NAME}
+      POSTGRES_USER: ${USER_DB_USER}
+      POSTGRES_PASSWORD: ${USER_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  exercise_service:
+    build: 
+      context: ../services/exercise_service
+      dockerfile: Dockerfile
+    container_name: exercise_service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - exercise_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://exercise_db:5432/${EXERCISE_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${EXERCISE_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${EXERCISE_DB_PASSWORD}
+    networks:
+      - app_network
+
+  exercise_db:
+    image: postgres:16
+    container_name: exercise_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${EXERCISE_DB_NAME}
+      POSTGRES_USER: ${EXERCISE_DB_USER}
+      POSTGRES_PASSWORD: ${EXERCISE_DB_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - exercise_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  workout_service:
+    build: 
+      context: ../services/workout_service
+      dockerfile: Dockerfile
+    container_name: workout_service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - workout_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://workout_db:5432/${WORKOUT_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${WORKOUT_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${WORKOUT_DB_PASSWORD}
+    networks:
+      - app_network
+
+  workout_db:
+    image: postgres:16
+    container_name: workout_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${WORKOUT_DB_NAME}
+      POSTGRES_USER: ${WORKOUT_DB_USER}
+      POSTGRES_PASSWORD: ${WORKOUT_DB_PASSWORD}
+    ports:
+      - "5435:5432"
+    volumes:
+      - workout_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  social_service:
+    build: 
+      context: ../services/social_service
+      dockerfile: Dockerfile
+    container_name: social_service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - social_db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://social_db:5432/${SOCIAL_DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${SOCIAL_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${SOCIAL_DB_PASSWORD}
+    networks:
+      - app_network
+
+  social_db:
+    image: postgres:16
+    container_name: social_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${SOCIAL_DB_NAME}
+      POSTGRES_USER: ${SOCIAL_DB_USER}
+      POSTGRES_PASSWORD: ${SOCIAL_DB_PASSWORD}
+    ports:
+      - "5436:5432"
+    volumes:
+      - social_db_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  user_db_data:
+  exercise_db_data:
+  workout_db_data:
+  social_db_data:
+
+networks:
+  app_network:
+    driver: bridge
